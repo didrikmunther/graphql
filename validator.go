@@ -1,11 +1,27 @@
 package graphql
 
 import (
+	"context"
+
 	"github.com/graphql-go/graphql/gqlerrors"
 	"github.com/graphql-go/graphql/language/ast"
 	"github.com/graphql-go/graphql/language/kinds"
 	"github.com/graphql-go/graphql/language/visitor"
 )
+
+type contextKey int
+
+const (
+	documentKey contextKey = iota
+)
+
+func WithDocument(ctx context.Context, astDoc *ast.Document) context.Context {
+	return context.WithValue(ctx, documentKey, astDoc)
+}
+
+func GetDocument(ctx context.Context) *ast.Document {
+	return ctx.Value(documentKey).(*ast.Document)
+}
 
 type ValidationResult struct {
 	IsValid bool
