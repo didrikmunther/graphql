@@ -75,6 +75,12 @@ func Do(p Params) *Result {
 		}
 	}
 
+	if p.Context == nil {
+		p.Context = context.Background()
+	}
+
+	p.Context = WithDocument(p.Context, AST)
+
 	// notify extensions about the start of the validation
 	extErrs, validationFinishFn := handleExtensionsValidationDidStart(&p)
 	if len(extErrs) != 0 {
